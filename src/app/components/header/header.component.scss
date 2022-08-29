@@ -1,0 +1,15 @@
+.header-container {
+    width: 100%;
+
+    .mat-toolbar {
+        .toolbar {
+            text-align: center;
+            width: 100%;
+            margin: auto;
+
+            .toolbar__add-button {
+                float: right;
+            }
+        }
+    }
+}

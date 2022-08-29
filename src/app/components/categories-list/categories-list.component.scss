@@ -1,0 +1,11 @@
+.categories-list-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+
+    .categories-list-container__card {
+        width: 31%;
+        margin-top: 2rem;
+    }
+}
