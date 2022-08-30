@@ -14,4 +14,11 @@ export const GET_CATEGORIES_WITH_TODOS = gql`
      }
 `;
 
-
+export const GET_CATEGORIES_WITHOUT_TODOS = gql`
+   query {
+      categories {
+         id
+         title
+        }
+     }
+`;

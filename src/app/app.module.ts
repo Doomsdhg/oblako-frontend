@@ -19,6 +19,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { GraphQLModule } from './graphql/graphql.module';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,9 @@ import { HttpClientModule } from '@angular/common/http';
     MatInputModule,
     MatSelectModule,
     GraphQLModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
