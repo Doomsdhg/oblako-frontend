@@ -2,7 +2,8 @@
     <mat-toolbar color="primary">
         <div class="toolbar">
             <span class="toolbar__title">Задачи</span>
-            <button class="toolbar__add-button" mat-raised-button>
+            <button class="toolbar__add-button" mat-button
+            (click)="openDialog()">
                 <mat-icon>add</mat-icon>
             </button>
         </div>

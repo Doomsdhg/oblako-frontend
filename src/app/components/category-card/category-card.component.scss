@@ -1,6 +1,10 @@
 .category-card-container {
-    .todo__text {
-        display: inline-block;
-        margin-left: 1rem;
+    .todo {
+        margin-top: 1rem;
+        .todo__text {
+            display: inline-block;
+            margin-left: 1rem;
+            font-size: 1.1rem;
+        }
     }
 }

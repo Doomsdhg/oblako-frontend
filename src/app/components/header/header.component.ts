@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { AddTodoDialogComponent } from '../add-todo-dialog/add-todo-dialog.component';
 
 @Component({
   selector: 'frnt-header',
@@ -7,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  constructor(private _dialog: MatDialog){}
 
   ngOnInit(): void {
+  }
+
+  openDialog(): void{
+    this._dialog.open(AddTodoDialogComponent);
   }
 
 }

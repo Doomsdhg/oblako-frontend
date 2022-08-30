@@ -11,6 +11,12 @@ import { CategoryCardComponent } from './components/category-card/category-card.
 import { CategoriesListComponent } from './components/categories-list/categories-list.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDividerModule } from '@angular/material/divider';
+import { AddTodoDialogComponent } from './components/add-todo-dialog/add-todo-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -18,7 +24,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MainPageComponent,
     HeaderComponent,
     CategoryCardComponent,
-    CategoriesListComponent
+    CategoriesListComponent,
+    AddTodoDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -27,7 +34,12 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatButtonModule,
     MatIconModule,
     MatCardModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatDividerModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]
