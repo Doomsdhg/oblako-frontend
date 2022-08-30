@@ -1,0 +1,37 @@
+<div class="add-todo-dialog-container">
+    <div class="dialog-content">
+        <h1 class="dialog-content__title">Новая задача</h1>
+        <mat-divider></mat-divider>
+        <form class="dialog-content__formgroup">
+            <mat-form-field appearance="fill">
+              <mat-label>Название задачи</mat-label>
+              <input matInput>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Категория</mat-label>
+                <mat-select required>
+                    <mat-option>
+                    </mat-option>
+                    <mat-option>
+                        Новая категория
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Название категории</mat-label>
+                <input matInput>
+              </mat-form-field>
+        </form>
+        <div class="dialog-content__buttonsgroup">
+            <button mat-stroked-button 
+            class="cancel-button">
+            Отмена
+            </button>
+            <mat-divider [vertical]="true" class="divider"></mat-divider>
+            <button mat-flat-button color="primary"
+            class="ok-button">
+            Ок
+            </button>
+        </div>
+    </div>
+</div>
