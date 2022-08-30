@@ -1,19 +1,11 @@
 <div class="category-card-container">
     <mat-card>
-        <mat-card-title>Title</mat-card-title>
+        <mat-card-title>{{category.title}}</mat-card-title>
         <mat-divider inset></mat-divider>
         <mat-card-content>
-            <div class="todo">
-                <mat-checkbox class="todo__checkbox"></mat-checkbox>
-                <span class="todo__text">do something</span>
-            </div>
-            <div class="todo">
-                <mat-checkbox class="todo__checkbox"></mat-checkbox>
-                <span class="todo__text">do something</span>
-            </div>
-            <div class="todo">
-                <mat-checkbox class="todo__checkbox"></mat-checkbox>
-                <span class="todo__text">do something</span>
+            <div class="todo" *ngFor="let todo of category.todos">
+                <mat-checkbox class="todo__checkbox" [ngClass]="{'crossed-text': todo.isCompleted}"></mat-checkbox>
+                <span class="todo__text">{{todo.text}}</span>
             </div>
         </mat-card-content>
     </mat-card>
