@@ -3,9 +3,12 @@
         <mat-card-title>{{category.title}}</mat-card-title>
         <mat-divider inset></mat-divider>
         <mat-card-content>
-            <div class="todo" *ngFor="let todo of category.todos">
-                <mat-checkbox class="todo__checkbox" [ngClass]="{'crossed-text': todo.isCompleted}"></mat-checkbox>
-                <span class="todo__text">{{todo.text}}</span>
+            <div class="todo" *ngFor="let todo of category.todos; index as index;">
+                <mat-checkbox class="todo__checkbox" 
+                checked="{{todo.isCompleted}}" 
+                (click)="toggleTodoCompleted(todo.id, index)"></mat-checkbox>
+                <span class="todo__text"
+                [ngClass]="{'crossed-text': todo.isCompleted}">{{todo.text}}</span>
             </div>
         </mat-card-content>
     </mat-card>

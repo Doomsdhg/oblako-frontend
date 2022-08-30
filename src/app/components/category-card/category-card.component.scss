@@ -1,6 +1,9 @@
 .category-card-container {
     .todo {
         margin-top: 1rem;
+        .crossed-text {
+            text-decoration: line-through;
+        }
         .todo__text {
             display: inline-block;
             margin-left: 1rem;

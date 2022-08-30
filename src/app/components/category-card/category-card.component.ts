@@ -1,5 +1,9 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
+import { MutationResult } from 'apollo-angular';
+import { plainToInstance } from 'class-transformer';
+import { TodosApiService } from 'src/app/services/todos-api.service';
 import { Category } from './models/category.model';
+import { Todo } from './models/todo.model';
 
 @Component({
   selector: 'frnt-category-card',
@@ -7,14 +11,21 @@ import { Category } from './models/category.model';
   styleUrls: ['./category-card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CategoryCardComponent implements OnInit {
+export class CategoryCardComponent {
 
   @Input()
   category!: Category;
 
-  constructor() { }
+  constructor(
+    private todosApiService: TodosApiService,
+    private changeDetectorRef: ChangeDetectorRef
+    ){}
 
-  ngOnInit(): void {
+  public toggleTodoCompleted(todoId: String, todoIndex: number): void {
+    this.todosApiService.toggleTodoCompleted(todoId)
+    .subscribe((response: MutationResult<Todo>) => {
+      this.category.todos[todoIndex] = plainToInstance(Todo, response.data);
+      this.changeDetectorRef.detectChanges();
+    });
   }
-
 }
