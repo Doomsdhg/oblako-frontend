@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { ApolloQueryResult } from '@apollo/client/core';
 import { plainToInstance } from 'class-transformer';
 import { CategoriesApiService } from 'src/app/services/categories-api.service';
-import { CategoriesResponseData } from 'src/app/services/categories-response.interface';
+import { GetCategoriesResponseData } from 'src/app/services/interfaces/categories-response.interface';
 import { Category } from '../category-card/models/category.model';
 
 @Component({
@@ -26,7 +26,7 @@ export class CategoriesListComponent implements OnInit {
 
   private subscribeToCategoriesChanges(){
     this.categoriesApiService.categoriesChanges
-    .subscribe((response: ApolloQueryResult<CategoriesResponseData>) => {
+    .subscribe((response: ApolloQueryResult<GetCategoriesResponseData>) => {
       this.categories = plainToInstance(Category, response.data.categories);
       this.changeDetectorRef.detectChanges();
     });
