@@ -1,9 +1,11 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MutationResult } from 'apollo-angular';
 import { CategoriesApiService } from 'src/app/services/categories-api.service';
+import { CategoriesDataSourceService } from 'src/app/services/categories-data-source.service';
 import { GetCategoriesResponseData } from 'src/app/services/interfaces/categories-response.interface';
+import { TodosApiService } from 'src/app/services/todos-api.service';
 import { Category } from '../category-card/models/category.model';
 
 @Component({
@@ -18,18 +20,19 @@ export class AddTodoDialogComponent implements OnInit {
 
   private _categories?: Category[];
 
-  public formGroup = new FormGroup({
-    categorySelect: new FormControl()
-  });
+  public formGroup!: FormGroup;
 
   constructor(
     private dialogRef: MatDialogRef<AddTodoDialogComponent>,
     private categoriesApiService: CategoriesApiService,
-    private changeDetectorRef: ChangeDetectorRef
+    private todosApiService: TodosApiService,
+    private changeDetectorRef: ChangeDetectorRef,
+    private categoriesDataSource: CategoriesDataSourceService
     ) {}
 
   ngOnInit(): void {
     this.getCategories();
+    this.buildForms();
     this.subscribeToSelectChanges();
   }
 
@@ -49,6 +52,61 @@ export class AddTodoDialogComponent implements OnInit {
     this._categories = value || [];
   }
 
+  public get newCategoryValidators(): ValidatorFn[] | null{
+    return this.newCategorySelected ? [Validators.required] : null;
+  }
+
+  public get todoTextInput(): String {
+    return this.formGroup.get('todoText')!.value;
+  }
+
+  public get newCategoryTitleInput(): String {
+    return this.formGroup.get('newCategoryTitle')!.value;
+  }
+
+  public get selectedCategoryId(): String {
+    return this.formGroup.get('categorySelect')!.value;
+  }
+
+  public closeDialogWithoutRefreshing(): void {
+    this.dialogRef.close();
+  }
+
+  public handleCreateTodoClick(): void {
+    if (this.newCategorySelected){
+      this.createTodoInNewCategory()
+    } else {
+      this.createTodoInExistingCategory()
+    }
+  }
+
+  public closeDialogWithRefreshing(): void {
+    this.categoriesDataSource.loadCategories();
+    this.dialogRef.close();
+  }
+
+  private createTodoInNewCategory(): void {
+    this.todosApiService.createTodoInNewCategory(this.todoTextInput, this.newCategoryTitleInput)
+    .subscribe(() => {
+      this.closeDialogWithRefreshing();
+    })
+  }
+
+  private createTodoInExistingCategory(): void {
+    this.todosApiService.createTodoInExistingCategory(this.todoTextInput, this.selectedCategoryId)
+    .subscribe(() => {
+      this.closeDialogWithRefreshing();
+    })
+  }
+
+  private buildForms(): void {
+    this.formGroup = new FormGroup({
+      todoText: new FormControl<String>('', [Validators.required]),
+      categorySelect: new FormControl<String>('', [Validators.required]),
+      newCategoryTitle: new FormControl<String>('', this.newCategoryValidators)
+    });
+  }
+
   private getCategories(): void {
     this.categoriesApiService.getCategoriesWithoutTodos()
     .subscribe((response: MutationResult<GetCategoriesResponseData>) => {
@@ -57,25 +115,21 @@ export class AddTodoDialogComponent implements OnInit {
   }
 
   private subscribeToSelectChanges(): void {
-    this.formGroup.controls.categorySelect.valueChanges
-    .subscribe((value) => {
+    this.formGroup.get('categorySelect')!.valueChanges
+    .subscribe((value: String) => {
       if (value === 'new') {
-        this.newCategorySelected = true;
+        this.displayNewCategoryAddingForm();
       } else {
-        this.newCategorySelected = false;
+        this.hideNewCategoryAddingForm();
       }
     });
   }
 
   private displayNewCategoryAddingForm(): void {
     this.newCategorySelected = true;
-    console.log(this.newCategorySelected);
-    this.changeDetectorRef.detectChanges();
   }
 
   private hideNewCategoryAddingForm(): void {
     this.newCategorySelected = false;
-    console.log(this.newCategorySelected);
-    this.changeDetectorRef.detectChanges();
   }
 }
