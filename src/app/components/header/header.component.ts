@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { CategoriesDataSourceService } from 'src/app/services/categories-data-source.service';
 import { AddTodoDialogComponent } from '../add-todo-dialog/add-todo-dialog.component';
 
 @Component({
@@ -9,15 +8,9 @@ import { AddTodoDialogComponent } from '../add-todo-dialog/add-todo-dialog.compo
   styleUrls: ['./header.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent{
 
-  constructor(
-    private dialog: MatDialog,
-    private categoriesDataSource: CategoriesDataSourceService 
-    ){}
-
-  ngOnInit(): void {
-  }
+  constructor(private dialog: MatDialog){}
 
   openDialog(): void{
     this.dialog.open(AddTodoDialogComponent);

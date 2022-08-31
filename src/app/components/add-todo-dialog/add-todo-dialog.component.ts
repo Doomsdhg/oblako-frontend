@@ -1,12 +1,15 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MutationResult } from 'apollo-angular';
+import { Subject, takeUntil } from 'rxjs';
+import { Constants } from 'src/app/constants/global.constants';
 import { CategoriesApiService } from 'src/app/services/categories-api.service';
 import { CategoriesDataSourceService } from 'src/app/services/categories-data-source.service';
 import { GetCategoriesResponseData } from 'src/app/services/interfaces/categories-response.interface';
 import { TodosApiService } from 'src/app/services/todos-api.service';
 import { Category } from '../category-card/models/category.model';
+import { AddTodoDialogConstants } from './add-todo-dialog.constants';
 
 @Component({
   selector: 'frnt-add-todo-dialog',
@@ -14,21 +17,27 @@ import { Category } from '../category-card/models/category.model';
   styleUrls: ['./add-todo-dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AddTodoDialogComponent implements OnInit {
+export class AddTodoDialogComponent implements OnInit, OnDestroy {
+
+  public formGroup!: FormGroup;
 
   private _newCategorySelected: boolean = false;
 
   private _categories?: Category[];
 
-  public formGroup!: FormGroup;
+  private ngUnsubscribe = new Subject<void>();
 
   constructor(
     private dialogRef: MatDialogRef<AddTodoDialogComponent>,
     private categoriesApiService: CategoriesApiService,
     private todosApiService: TodosApiService,
-    private changeDetectorRef: ChangeDetectorRef,
     private categoriesDataSource: CategoriesDataSourceService
     ) {}
+
+  public ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
 
   ngOnInit(): void {
     this.getCategories();
@@ -57,15 +66,15 @@ export class AddTodoDialogComponent implements OnInit {
   }
 
   public get todoTextInput(): String {
-    return this.formGroup.get('todoText')!.value;
+    return this.formGroup.get(AddTodoDialogConstants.FORM_CONTROL_ACCESSORS.TODO_TEXT)!.value;
   }
 
   public get newCategoryTitleInput(): String {
-    return this.formGroup.get('newCategoryTitle')!.value;
+    return this.formGroup.get(AddTodoDialogConstants.FORM_CONTROL_ACCESSORS.NEW_CATEGORY_TITLE)!.value;
   }
 
   public get selectedCategoryId(): String {
-    return this.formGroup.get('categorySelect')!.value;
+    return this.formGroup.get(AddTodoDialogConstants.FORM_CONTROL_ACCESSORS.CATEGORY_SELECT)!.value;
   }
 
   public closeDialogWithoutRefreshing(): void {
@@ -101,9 +110,9 @@ export class AddTodoDialogComponent implements OnInit {
 
   private buildForms(): void {
     this.formGroup = new FormGroup({
-      todoText: new FormControl<String>('', [Validators.required]),
-      categorySelect: new FormControl<String>('', [Validators.required]),
-      newCategoryTitle: new FormControl<String>('', this.newCategoryValidators)
+      todoText: new FormControl<String>(Constants.DEFAULT_VALUES.EMPTY_STRING, [Validators.required]),
+      categorySelect: new FormControl<String>(Constants.DEFAULT_VALUES.EMPTY_STRING, [Validators.required]),
+      newCategoryTitle: new FormControl<String>(Constants.DEFAULT_VALUES.EMPTY_STRING, this.newCategoryValidators)
     });
   }
 
@@ -115,9 +124,10 @@ export class AddTodoDialogComponent implements OnInit {
   }
 
   private subscribeToSelectChanges(): void {
-    this.formGroup.get('categorySelect')!.valueChanges
+    this.formGroup.get(AddTodoDialogConstants.FORM_CONTROL_ACCESSORS.CATEGORY_SELECT)!.valueChanges
+    .pipe(takeUntil(this.ngUnsubscribe))
     .subscribe((value: String) => {
-      if (value === 'new') {
+      if (value === AddTodoDialogConstants.VALUES.NEW_CATEGORY_VALUE) {
         this.displayNewCategoryAddingForm();
       } else {
         this.hideNewCategoryAddingForm();
