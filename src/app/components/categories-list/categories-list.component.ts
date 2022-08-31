@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ApolloQueryResult } from '@apollo/client/core';
 import { plainToInstance } from 'class-transformer';
 import { CategoriesApiService } from 'src/app/services/categories-api.service';
-import { GetCategoriesResponseData } from 'src/app/services/interfaces/categories-response.interface';
+import { CategoriesDataSourceService } from 'src/app/services/categories-data-source.service';
 import { Category } from '../category-card/models/category.model';
 
 @Component({
@@ -17,18 +16,19 @@ export class CategoriesListComponent implements OnInit {
 
   constructor(
     private categoriesApiService: CategoriesApiService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private categoriesDatasourceService: CategoriesDataSourceService
   ) {}
 
   ngOnInit(): void {
-    this.subscribeToCategoriesChanges();
+    this.getCategories();
   }
 
-  private subscribeToCategoriesChanges(){
-    this.categoriesApiService.categoriesChanges
-    .subscribe((response: ApolloQueryResult<GetCategoriesResponseData>) => {
-      this.categories = plainToInstance(Category, response.data.categories);
+  private getCategories(){
+    this.categoriesDatasourceService.categoriesSubject.subscribe((updatedCategories: Category[]) => {
+      this.categories = plainToInstance(Category, updatedCategories);
       this.changeDetectorRef.detectChanges();
-    });
+    })
+    this.categoriesDatasourceService.loadCategories();
   }
 }

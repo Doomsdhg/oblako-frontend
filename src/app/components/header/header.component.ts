@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { CategoriesDataSourceService } from 'src/app/services/categories-data-source.service';
 import { AddTodoDialogComponent } from '../add-todo-dialog/add-todo-dialog.component';
 
 @Component({
@@ -10,13 +11,15 @@ import { AddTodoDialogComponent } from '../add-todo-dialog/add-todo-dialog.compo
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private _dialog: MatDialog){}
+  constructor(
+    private dialog: MatDialog,
+    private categoriesDataSource: CategoriesDataSourceService 
+    ){}
 
   ngOnInit(): void {
   }
 
   openDialog(): void{
-    this._dialog.open(AddTodoDialogComponent);
+    this.dialog.open(AddTodoDialogComponent);
   }
-
 }

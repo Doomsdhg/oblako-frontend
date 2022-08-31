@@ -2,34 +2,46 @@
     <div class="dialog-content">
         <h1 class="dialog-content__title">Новая задача</h1>
         <mat-divider></mat-divider>
-        <form class="dialog-content__formgroup">
+        <form class="dialog-content__formgroup" [formGroup]="formGroup">
             <mat-form-field appearance="fill">
               <mat-label>Название задачи</mat-label>
-              <input matInput>
+              <input formControlName="todoText"
+              required 
+              matInput>
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>Категория</mat-label>
-                <mat-select required>
-                    <mat-option>
+                <mat-select formControlName="categorySelect"
+                required>
+                    <mat-option *ngFor="let category of categories;" 
+                    [value]="category.id">
+                    {{category.title}}
                     </mat-option>
-                    <mat-option>
+                    <mat-option value="new">
                         Новая категория
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="fill"
+            [ngClass]="{'display-none': !newCategorySelected}">
                 <mat-label>Название категории</mat-label>
-                <input matInput>
-              </mat-form-field>
+                <input formControlName="newCategoryTitle"
+                required 
+                matInput>
+            </mat-form-field>
         </form>
         <div class="dialog-content__buttonsgroup">
             <button mat-stroked-button 
-            class="cancel-button">
+            class="cancel-button"
+            (click)="closeDialogWithoutRefreshing()">
             Отмена
             </button>
             <mat-divider [vertical]="true" class="divider"></mat-divider>
-            <button mat-flat-button color="primary"
-            class="ok-button">
+            <button mat-flat-button 
+            type="submit"
+            color="primary"
+            class="ok-button"
+            (click)="handleCreateTodoClick()">
             Ок
             </button>
         </div>
