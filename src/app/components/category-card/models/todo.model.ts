@@ -1,8 +1,8 @@
 import { Category } from "./category.model";
 
 export class Todo {
-    id!: String;
-    text!: String;
+    id!: string;
+    text!: string;
     isCompleted!: boolean;
     categoryId!: String;
     category!: Category;
