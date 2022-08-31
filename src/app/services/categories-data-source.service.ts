@@ -10,16 +10,24 @@ import { GetCategoriesResponseData } from './interfaces/categories-response.inte
 @Injectable({
   providedIn: 'root'
 })
-export class CategoriesDataSourceService {
+export class CategoriesDataSourceService implements OnDestroy {
 
   public categoriesSubject = new Subject<Category[]>();
+
+  private ngUnsubscribe = new Subject<void>();
 
   constructor(
     private categoriesApiService: CategoriesApiService,
   ){}
 
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
   public loadCategories(): void {
     this.categoriesApiService.categoriesChanges
+    .pipe(takeUntil(this.ngUnsubscribe))
     .subscribe((response: FetchResult<GetCategoriesResponseData>) => {
         this.categoriesSubject.next(plainToInstance(Category, response.data!.categories));
       }
