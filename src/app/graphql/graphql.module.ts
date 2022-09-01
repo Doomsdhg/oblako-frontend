@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
-import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
 import { ApolloClientOptions, InMemoryCache } from '@apollo/client/core';
+import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
+import { environment } from '../../environments/environment';
 
-const uri = 'https://oblako-group-server-updated.herokuapp.com/graphql'; // <-- add the URL of the GraphQL server here
+const uri = environment.apiUrl;
 export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
   return {
     link: httpLink.create({ uri }),
