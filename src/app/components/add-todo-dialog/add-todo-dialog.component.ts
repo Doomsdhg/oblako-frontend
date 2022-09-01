@@ -3,11 +3,10 @@ import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms'
 import { MatDialogRef } from '@angular/material/dialog';
 import { MutationResult } from 'apollo-angular';
 import { Subject, takeUntil } from 'rxjs';
-import { Constants } from 'src/app/constants/global.constants';
-import { CategoriesApiService } from 'src/app/services/categories-api.service';
-import { CategoriesDataSourceService } from 'src/app/services/categories-data-source.service';
-import { GetCategoriesResponseData } from 'src/app/services/interfaces/categories-response.interface';
-import { TodosApiService } from 'src/app/services/todos-api.service';
+import { CategoriesApiService } from '../../services/categories-api.service';
+import { CategoriesDataSourceService } from '../../services/categories-data-source.service';
+import { GetCategoriesResponseData } from '../../services/interfaces/categories-response.interface';
+import { TodosApiService } from '../../services/todos-api.service';
 import { Category } from '../category-card/models/category.model';
 import { AddTodoDialogConstants } from './add-todo-dialog.constants';
 
@@ -94,6 +93,10 @@ export class AddTodoDialogComponent implements OnInit, OnDestroy {
     this.dialogRef.close();
   }
 
+  public identifyCategory(index: number, category: Category): Category {
+    return category; 
+  }
+
   private createTodoInNewCategory(): void {
     this.todosApiService.createTodoInNewCategory(this.todoTextInput, this.newCategoryTitleInput)
     .subscribe(() => {
@@ -110,9 +113,9 @@ export class AddTodoDialogComponent implements OnInit, OnDestroy {
 
   private buildForms(): void {
     this.formGroup = new FormGroup({
-      todoText: new FormControl<String>(Constants.DEFAULT_VALUES.EMPTY_STRING, [Validators.required]),
-      categorySelect: new FormControl<String>(Constants.DEFAULT_VALUES.EMPTY_STRING, [Validators.required]),
-      newCategoryTitle: new FormControl<String>(Constants.DEFAULT_VALUES.EMPTY_STRING, this.newCategoryValidators)
+      todoText: new FormControl<String>('', [Validators.required]),
+      categorySelect: new FormControl<String>('', [Validators.required]),
+      newCategoryTitle: new FormControl<String>('', this.newCategoryValidators)
     });
   }
 

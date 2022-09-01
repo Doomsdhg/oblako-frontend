@@ -13,7 +13,7 @@
                 <mat-label>Категория</mat-label>
                 <mat-select formControlName="categorySelect"
                 required>
-                    <mat-option *ngFor="let category of categories;" 
+                    <mat-option *ngFor="let category of categories; trackBy: identifyCategory" 
                     [value]="category.id">
                     {{category.title}}
                     </mat-option>

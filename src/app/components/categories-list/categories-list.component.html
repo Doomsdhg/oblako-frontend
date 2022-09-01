@@ -1,5 +1,5 @@
 <div class="categories-list-container">
-    <frnt-category-card *ngFor="let category of categories" 
+    <frnt-category-card *ngFor="let category of categories; trackBy identifyCategory" 
     class="categories-list-container__card"
     [category]="category">
     </frnt-category-card>

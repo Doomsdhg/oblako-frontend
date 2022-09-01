@@ -3,7 +3,7 @@
         <mat-card-title>{{category.title}}</mat-card-title>
         <mat-divider inset></mat-divider>
         <mat-card-content>
-            <div class="todo" *ngFor="let todo of category.todos; index as index;">
+            <div class="todo" *ngFor="let todo of category.todos; index as index; trackBy identifyTodo">
                 <mat-checkbox class="todo__checkbox" 
                 checked="{{todo.isCompleted}}" 
                 (click)="toggleTodoCompleted(todo.id, index)"></mat-checkbox>

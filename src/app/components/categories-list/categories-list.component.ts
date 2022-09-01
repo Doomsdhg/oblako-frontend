@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { plainToInstance } from 'class-transformer';
 import { Subject, takeUntil } from 'rxjs';
-import { CategoriesDataSourceService } from 'src/app/services/categories-data-source.service';
+import { CategoriesDataSourceService } from '../../services/categories-data-source.service';
 import { Category } from '../category-card/models/category.model';
 
 @Component({
@@ -28,6 +28,10 @@ export class CategoriesListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getCategories();
+  }
+
+  public identifyCategory(index: number, category: Category): Category {
+    return category;
   }
 
   private getCategories(){

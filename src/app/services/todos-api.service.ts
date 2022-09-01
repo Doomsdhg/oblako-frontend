@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Apollo, MutationResult } from 'apollo-angular';
 import { Observable } from 'rxjs';
-import { Todo } from '../components/category-card/models/todo.model';
 import { CREATE_TODO_IN_EXISTING_CATEGORY, CREATE_TODO_IN_NEW_CATEGORY, TOGGLE_TODO_COMPLETED } from '../graphql/graphql.mutations';
 import { ToggleTodoCompletedResponse } from './interfaces/toggle-todo-completed-response.interface';
 
