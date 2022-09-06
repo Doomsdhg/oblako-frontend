@@ -6,13 +6,11 @@
             <mat-form-field appearance="fill">
               <mat-label>Название задачи</mat-label>
               <input formControlName="todoText"
-              required 
               matInput>
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>Категория</mat-label>
-                <mat-select formControlName="categorySelect"
-                required>
+                <mat-select formControlName="categorySelect">
                     <mat-option *ngFor="let category of categories; trackBy: identifyCategory" 
                     [value]="category.id">
                     {{category.title}}
@@ -26,7 +24,6 @@
             [ngClass]="{'display-none': !newCategorySelected}">
                 <mat-label>Название категории</mat-label>
                 <input formControlName="newCategoryTitle"
-                required 
                 matInput>
             </mat-form-field>
         </form>
