@@ -9,3 +9,11 @@ body {
     font-family: Roboto, "Helvetica Neue", sans-serif; 
     background-color: $background-color;
 }
+
+.error-snackbar {
+    background-color: red;
+}
+
+.success-snackbar {
+    background-color: green;
+}
